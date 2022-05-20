@@ -1,0 +1,10 @@
+{
+  "name": "rss-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Samuel Anozie",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
