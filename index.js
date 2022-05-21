@@ -16,6 +16,7 @@ const {
 	updateFeedPage,
 	newFeed,
 	updateFeed,
+	viewSinglePost,
 } = require("./controllers/feed");
 
 //Pages Routes
@@ -23,6 +24,7 @@ app.get("/", viewPostsPage); //load the default page containg all the posts
 app.get("/feeds", viewFeedsPage); //load the feeds page
 app.get("/feeds/add", newFeedPage); //load the add feed page
 app.get("/feeds/:id", updateFeedPage); //load the update feed page
+app.get("/post/:id", viewSinglePost); //load the default page containg all the posts
 
 //API Routes
 app.post("/feeds/add", newFeed); //add a new feed url

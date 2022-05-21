@@ -10,11 +10,11 @@ const checkRSS = async (url) => {
 			feed: ["title", "link", "description"],
 			item: [
 				"title",
-				"content",
 				"image",
 				"contentSnippet",
 				"link",
 				"pubDate",
+				["content:encoded", "fullcontent", { includeSnippet: true }],
 			],
 		},
 	});
@@ -32,13 +32,16 @@ const pullPostsFromRSS = async (id) => {
 	let feedData = await checkRSS(feed.data.rssurl);
 	let posts = feedData.items;
 	let postData = [];
-	console.log(posts);
+
 	for (let i = 0; i < posts.length; i++) {
 		let post = {
 			title: posts[i].title,
 			link: posts[i].link,
 			date: posts[i].pubDate,
-			content: posts[i].content,
+			content: posts[i].contentSnippet,
+			contentsnippet: posts[i].contentSnippet,
+			fullcontent: posts[i].fullcontent,
+			fullcontentsnippet: posts[i].fullcontentSnippet,
 			feed: id,
 		};
 		postData.push(post);
@@ -55,6 +58,19 @@ const removeFeedPosts = async (id) => {
 	if (!mongoose.Types.ObjectId.isValid(id)) return false;
 	try {
 		await postModel.deleteMany({ feed: id });
+		return true;
+	} catch (error) {
+		return false;
+	}
+};
+
+const markAsRead = async (id) => {
+	try {
+		const post = await postModel.findOneAndUpdate(
+			{ _id: id },
+			{ read: true },
+			{ new: true }
+		);
 		return true;
 	} catch (error) {
 		return false;
@@ -130,6 +146,7 @@ const getSingleFeed = async (id) => {
 const getSinglePost = async (id) => {
 	try {
 		const posts = await postModel.find({ _id: id });
+		await markAsRead(id);
 		return { success: true, message: "", data: posts[0] };
 	} catch (error) {
 		return { success: false, message: error.message, data: {} };

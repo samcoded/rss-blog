@@ -6,10 +6,20 @@ const {
 	editFeed,
 	removeFeed,
 	getSingleFeed,
+	getSinglePost,
 	getFeeds,
 	getPosts,
 } = require("../services/feed.js");
 
+const viewSinglePost = async (req, res) => {
+	const { id } = req.params;
+	const post = await getSinglePost(id);
+	if (post.success) return res.render("singlepost", { post: post.data });
+	return res.render("singlepost", {
+		error: true,
+		message: post.message,
+	});
+};
 const viewPostsPage = async (req, res) => {
 	const posts = await getPosts();
 	if (posts.success)
@@ -89,6 +99,7 @@ const updateFeed = async (req, res) => {
 };
 
 module.exports = {
+	viewSinglePost,
 	viewPostsPage,
 	viewFeedsPage,
 	newFeedPage,

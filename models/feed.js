@@ -15,9 +15,13 @@ const postSchema = mongoose.Schema(
 	{
 		title: { type: String, unique: true, required: true },
 		content: { type: String, default: "" },
+		fullcontent: { type: String, default: "" },
+		contentsnippet: { type: String, default: "" },
+		fullcontentsnippet: { type: String, default: "" },
 		link: { type: String, required: true },
 		// image: { type: String, required: true },
 		date: { type: Date, default: Date.now },
+		read: { type: Boolean, default: false },
 		feed: {
 			type: Schema.Types.ObjectId,
 			ref: "Feed",

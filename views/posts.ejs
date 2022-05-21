@@ -3,9 +3,11 @@ All posts <a href="/feeds">Feeds</a><a href="/">Posts</a>
 <% posts.forEach( function(post){ %>
 
 <div class="post">
-	<a href="<%= post.link %>" class="link"> <%= post.title %></a>
-	<div><%= post.content %></div>
+	<a href="/post/<%= post.id %>" class="link"> <%= post.title %></a>
+	<div><%= post.contentsnippet %></div>
 	<p><%= post.feed.title %></p>
+
+	<% if (post.read) {%> Read <% } else { %> Unread <% } %>
 </div>
 
 <% }); %> <% if(locals.error) { %>
