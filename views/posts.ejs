@@ -1,0 +1,15 @@
+All posts <a href="/feeds">Feeds</a><a href="/">Posts</a>
+
+<% posts.forEach( function(post){ %>
+
+<div class="post">
+	<a href="<%= post.link %>" class="link"> <%= post.title %></a>
+	<div><%= post.content %></div>
+	<p><%= post.feed.title %></p>
+</div>
+
+<% }); %> <% if(locals.error) { %>
+
+<div><%=message%></div>
+
+<%}%>

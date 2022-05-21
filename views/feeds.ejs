@@ -1,0 +1,22 @@
+<a href="/feeds/add">Add Feed</a><a href="/">Posts</a>
+
+<% feeds.forEach(function(feed) { %>
+
+<div class="post">
+	<a href="<%= feed.link %>" class="link"> <%= feed.title %></a>
+	<p><%= feed.description %></p>
+	<p><%= feed.rssurl %></p>
+	<form action="/feeds/<%= feed._id %>" method="get">
+		<input type="submit" value="Edit" />
+	</form>
+	<form action="/feeds/<%= feed._id %>" method="post">
+		<input type="hidden" name="_method" value="delete" />
+		<input type="submit" value="Delete" />
+	</form>
+</div>
+
+<% }) %> <% if(locals.error) { %>
+
+<div><%=message%></div>
+
+<%}%>

@@ -1,0 +1,34 @@
+EDIT FIELD <a href="/feeds">Feeds</a><a href="/">Posts</a>
+
+<form action="/feeds/<%= feed.id %>" method="post">
+	<input
+		type="text"
+		name="title"
+		placeholder="Title"
+		value="<%= feed.title %>"
+	/>
+	<input
+		type="text"
+		name="link"
+		placeholder="Link"
+		value="<%= feed.link %>"
+	/>
+	<input
+		type="text"
+		name="rssurl"
+		placeholder="RSS URL"
+		value="<%= feed.rssurl %>"
+	/>
+	<input
+		type="text"
+		name="description"
+		placeholder="Description"
+		value="<%= feed.description %>"
+	/>
+	<input type="submit" value="Edit Feed" />
+</form>
+<% if(locals.error) { %>
+
+<div><%=message%></div>
+
+<%}%>
