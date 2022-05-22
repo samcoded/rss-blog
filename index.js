@@ -25,12 +25,13 @@ const {
 	newFeed,
 	updateFeed,
 	viewSinglePost,
+	viewFollowing,
 } = require("./controllers/feed");
 const { updateSiteConfig } = require("./controllers/config");
 
 //Pages Routes
 app.get("/", viewPostsPage); //load the default page containg all the posts
-app.get("/following", viewFeedsPage); //load the following page
+app.get("/following", viewFollowing); //load the following page
 app.get("/feeds", viewFeedsPage); //load the manage feeds page
 app.get("/feeds/add", newFeedPage); //load the add feed page
 app.get("/feeds/:id", updateFeedPage); //load the update feed page

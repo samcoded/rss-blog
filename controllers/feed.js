@@ -78,6 +78,26 @@ const viewFeedsPage = async (req, res) => {
 	});
 };
 
+const viewFollowing = async (req, res) => {
+	const perPage = 10;
+	const page = req.query.page || 1;
+	const feeds = await getFeeds(perPage, page);
+	let renderData = {
+		feeds: feeds.data,
+		current: feeds.current,
+		pages: feeds.pages,
+		total: feeds.total,
+		perPage: feeds.perPage,
+	};
+
+	if (feeds.success) return res.render("following", renderData);
+	return res.render("feeds", {
+		feeds: [],
+		error: true,
+		message: feeds.message,
+	});
+};
+
 const newFeedPage = async (req, res) => {
 	return res.render("addfeed");
 };
@@ -140,4 +160,5 @@ module.exports = {
 	updateFeedPage,
 	newFeed,
 	updateFeed,
+	viewFollowing,
 };

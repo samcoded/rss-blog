@@ -144,7 +144,7 @@ const getSingleFeed = async (id) => {
 };
 const getSinglePost = async (id) => {
 	try {
-		const posts = await postModel.find({ _id: id });
+		const posts = await postModel.find({ _id: id }).populate("feed");
 		await markAsRead(id);
 		return { success: true, message: "", data: posts[0] };
 	} catch (error) {
@@ -182,7 +182,8 @@ const getPosts = async (perPage = 10, page = 1) => {
 			.find()
 			.sort({ createdAt: "desc" })
 			.skip(perPage * page - perPage)
-			.limit(perPage);
+			.limit(perPage)
+			.populate("feed");
 		postCount = await postModel.countDocuments();
 
 		return {
