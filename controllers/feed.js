@@ -27,6 +27,7 @@ const viewPostsPage = async (req, res) => {
 	const perPage = 10;
 	const page = req.query.page || 1;
 	const posts = await getPosts(perPage, page);
+	const config = await getConfig();
 	if (posts.success)
 		return res.render("posts", {
 			posts: posts.data,
@@ -35,6 +36,7 @@ const viewPostsPage = async (req, res) => {
 			pages: posts.pages,
 			total: posts.total,
 			perPage: posts.perPage,
+			preview_length: config.preview_length,
 		});
 	return res.render("posts", {
 		posts: [],
