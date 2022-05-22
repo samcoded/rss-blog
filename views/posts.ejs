@@ -25,17 +25,19 @@
 						<div
 							class="bg-white rounded-b 2xl:rounded-b-none 2xl:rounded-r p-4 flex flex-col justify-between leading-normal hover:bg-gray-200"
 						>
-							<div
-								class="text-black font-bold text-xl mb-2 leading-tight"
+							<divs
+								class="text-black font-bold text-l mb-2 leading-tight"
 							>
-								<%= post.title %>
-							</div>
+							
+						
+							<span class="<% if (post.read) {%>text-gray-600<% } else { %>text-black<%
+							} %>">	<%= post.title %></span>
+							</divs>
 							<p class="text-grey-darker text-base">
-								<%= post.contentsnippet %> ...Read more
+								<%= post.contentsnippet %> ...
 								<p><%= post.feed.title %></p>
 							</p>
-							<% if (post.read) {%> Read <% } else { %> Unread <%
-							} %>
+							
 						</div>
 					</div>
 				</a>

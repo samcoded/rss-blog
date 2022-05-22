@@ -11,6 +11,8 @@ const {
 	getPosts,
 } = require("../services/feed.js");
 
+const { getConfig, setConfig } = require("../services/config.js");
+
 const viewSinglePost = async (req, res) => {
 	const { id } = req.params;
 	const post = await getSinglePost(id);
@@ -44,15 +46,29 @@ const viewFeedsPage = async (req, res) => {
 	const perPage = 10;
 	const page = req.query.page || 1;
 	const feeds = await getFeeds(perPage, page);
-	if (feeds.success)
-		return res.render("feeds", {
-			feeds: feeds.data,
-			message: feeds.message,
-			current: feeds.current,
-			pages: feeds.pages,
-			total: feeds.total,
-			perPage: feeds.perPage,
-		});
+	const config = await getConfig();
+
+	let renderData = {
+		feeds: feeds.data,
+		current: feeds.current,
+		pages: feeds.pages,
+		total: feeds.total,
+		perPage: feeds.perPage,
+		preview_length: config.preview_length,
+		pull_interval: config.pull_interval,
+	};
+	const sess = req.session;
+	if (sess.success) {
+		renderData.success = true;
+		renderData.message = sess.success;
+		req.session.destroy();
+	} else if (sess.error) {
+		renderData.error = true;
+		renderData.message = sess.error;
+		req.session.destroy();
+	}
+
+	if (feeds.success) return res.render("feeds", renderData);
 	return res.render("feeds", {
 		feeds: [],
 		error: true,
@@ -76,7 +92,11 @@ const updateFeedPage = async (req, res) => {
 const newFeed = async (req, res) => {
 	const { url } = req.body;
 	const feed = await addFeed(url);
-	if (feed.success) return res.redirect(`/feeds`);
+
+	if (feed.success) {
+		req.session.success = "Feed added";
+		return res.redirect(`/feeds`);
+	}
 	return res.render("addfeed", {
 		error: true,
 		message: feed.message,
@@ -90,9 +110,8 @@ const updateFeed = async (req, res) => {
 
 	if (method && method == "delete") {
 		const deleteFeed = await removeFeed(id);
-		if (deleteFeed.success) {
-			return res.redirect(`/feeds`);
-		}
+		req.session.success = "Deleted";
+		return res.redirect(`/feeds`);
 	}
 
 	const updateFeed = await editFeed(id, { title, url, description });

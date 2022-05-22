@@ -16,10 +16,15 @@
 				POSTS
 			</a>
 			<a
+				href="/following"
+				class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+			>
+				FOLLOWING </a
+			><a
 				href="/feeds"
 				class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
 			>
-				FOLLOWING FEEDS
+				MANAGE
 			</a>
 			<a
 				href="/feeds/add"
@@ -31,7 +36,7 @@
 
 		<div>
 			<a
-				href="http://www.samuelanozie.me"
+				href="https://www.samuelanozie.me"
 				class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
 			>
 				MY RESUME
@@ -39,31 +44,32 @@
 		</div>
 	</div>
 </nav>
-
-<% if(locals.error) { %>
-
-<div role="alert">
-			<div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-				Error
-			</div>
-			<div
-				class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700"
-			>
-				<p><%=message%></p>
-			</div>
-		</div>
-
-<%}%> <% if(locals.success) { %>
+<div class="container mx-auto px-4">
+	<% if(locals.error) { %>
 
 	<div role="alert">
-			<div class="bg-green-500 text-white font-bold rounded-t px-4 py-2">
-				Success
-			</div>
-			<div
-				class="border border-t-0 border-gteen-400 rounded-b bg-green-100 px-4 py-3 text-green-700"
-			>
-				<p><%=message%></p>
-			</div>
-		</div.
+		<div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+			Error
+		</div>
+		<div
+			class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700"
+		>
+			<p><%=message%></p>
+		</div>
+	</div>
 
-<%}%>
+	<%}%> <% if(locals.success) { %>
+
+	<div role="alert">
+		<div class="bg-green-500 text-white font-bold rounded-t px-4 py-2">
+			Success
+		</div>
+		<div
+			class="border border-t-0 border-gteen-400 rounded-b bg-green-100 px-4 py-3 text-green-700"
+		>
+			<p><%=message%></p>
+		</div>
+	</div>
+
+	<%}%>
+</div>

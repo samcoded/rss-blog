@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const session = require("express-session");
 
 const app = express();
 dotenv.config();
@@ -8,6 +9,13 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+	})
+);
 
 const {
 	viewPostsPage,
@@ -18,16 +26,19 @@ const {
 	updateFeed,
 	viewSinglePost,
 } = require("./controllers/feed");
+const { updateSiteConfig } = require("./controllers/config");
 
 //Pages Routes
 app.get("/", viewPostsPage); //load the default page containg all the posts
-app.get("/feeds", viewFeedsPage); //load the feeds page
+app.get("/following", viewFeedsPage); //load the following page
+app.get("/feeds", viewFeedsPage); //load the manage feeds page
 app.get("/feeds/add", newFeedPage); //load the add feed page
 app.get("/feeds/:id", updateFeedPage); //load the update feed page
 app.get("/post/:id", viewSinglePost); //load the default page containg all the posts
 
 //API Routes
 app.post("/feeds/add", newFeed); //add a new feed url
+app.post("/feeds/config", updateSiteConfig); //update and delete the feed
 app.post("/feeds/:id", updateFeed); //update and delete the feed
 
 //Database
