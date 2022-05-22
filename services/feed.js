@@ -50,7 +50,6 @@ const pullPostsFromRSS = async (id) => {
 		let post = await postModel.insertMany(postData);
 		return post;
 	} catch (error) {
-		console.error(error);
 		return false;
 	}
 };
@@ -154,7 +153,7 @@ const getSinglePost = async (id) => {
 };
 const getFeeds = async () => {
 	try {
-		const feeds = await feedModel.find();
+		const feeds = await feedModel.find().sort({ createdAt: "desc" });
 		return { success: true, message: "", data: feeds };
 	} catch (error) {
 		return { success: false, message: error.message, data: {} };
@@ -163,7 +162,7 @@ const getFeeds = async () => {
 
 const getPosts = async () => {
 	try {
-		const posts = await postModel.find();
+		const posts = await postModel.find().sort({ createdAt: "desc" });
 		return { success: true, message: "Successful", data: posts };
 	} catch (error) {
 		return { success: false, message: error.message, data: {} };
