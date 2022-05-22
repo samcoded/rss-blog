@@ -151,19 +151,49 @@ const getSinglePost = async (id) => {
 		return { success: false, message: error.message, data: {} };
 	}
 };
-const getFeeds = async () => {
+const getFeeds = async (perPage = 10, page = 1) => {
 	try {
-		const feeds = await feedModel.find().sort({ createdAt: "desc" });
-		return { success: true, message: "", data: feeds };
+		let feedCount = 0;
+		const feeds = await feedModel
+			.find()
+			.sort({ createdAt: "desc" })
+			.skip(perPage * page - perPage)
+			.limit(perPage);
+		feedCount = await feedModel.countDocuments();
+
+		return {
+			success: true,
+			message: "Successful",
+			data: feeds,
+			current: page,
+			pages: Math.ceil(feedCount / perPage),
+			total: feedCount,
+			perPage: perPage,
+		};
 	} catch (error) {
 		return { success: false, message: error.message, data: {} };
 	}
 };
 
-const getPosts = async () => {
+const getPosts = async (perPage = 10, page = 1) => {
 	try {
-		const posts = await postModel.find().sort({ createdAt: "desc" });
-		return { success: true, message: "Successful", data: posts };
+		let postCount = 0;
+		const posts = await postModel
+			.find()
+			.sort({ createdAt: "desc" })
+			.skip(perPage * page - perPage)
+			.limit(perPage);
+		postCount = await postModel.countDocuments();
+
+		return {
+			success: true,
+			message: "Successful",
+			data: posts,
+			current: page,
+			pages: Math.ceil(postCount / perPage),
+			total: postCount,
+			perPage: perPage,
+		};
 	} catch (error) {
 		return { success: false, message: error.message, data: {} };
 	}

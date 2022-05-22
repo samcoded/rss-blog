@@ -18,14 +18,21 @@ const viewSinglePost = async (req, res) => {
 	return res.render("singlepost", {
 		error: true,
 		message: post.message,
+		title: "Error",
 	});
 };
 const viewPostsPage = async (req, res) => {
-	const posts = await getPosts();
+	const perPage = 10;
+	const page = req.query.page || 1;
+	const posts = await getPosts(perPage, page);
 	if (posts.success)
 		return res.render("posts", {
 			posts: posts.data,
 			message: posts.message,
+			current: posts.current,
+			pages: posts.pages,
+			total: posts.total,
+			perPage: posts.perPage,
 		});
 	return res.render("posts", {
 		posts: [],
@@ -34,11 +41,17 @@ const viewPostsPage = async (req, res) => {
 	});
 };
 const viewFeedsPage = async (req, res) => {
-	const feeds = await getFeeds();
+	const perPage = 10;
+	const page = req.query.page || 1;
+	const feeds = await getFeeds(perPage, page);
 	if (feeds.success)
 		return res.render("feeds", {
 			feeds: feeds.data,
 			message: feeds.message,
+			current: feeds.current,
+			pages: feeds.pages,
+			total: feeds.total,
+			perPage: feeds.perPage,
 		});
 	return res.render("feeds", {
 		feeds: [],
