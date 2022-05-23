@@ -36,7 +36,7 @@
 							<p class="text-grey-darker text-base">
 								<% const content=post.contentsnippet.substring(0, preview_length); %>
 								<%= content %> ...
-								<p>--<%= post.feed.title %></p>
+								<p><%=moment(post.date).fromNow()%> - <%= post.feed.title %></p>
 							</p>
 							
 						</div>

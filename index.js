@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const session = require("express-session");
-const nodeCron = require("node-cron");
 
 const app = express();
 dotenv.config();
@@ -10,6 +9,7 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.locals.moment = require("moment");
 app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
@@ -17,6 +17,13 @@ app.use(
 		saveUninitialized: false,
 	})
 );
+
+const { autoFetch } = require("./services/fetch");
+
+app.use((req, res, next) => {
+	autoFetch();
+	next();
+});
 
 const {
 	viewPostsPage,
@@ -29,8 +36,6 @@ const {
 	viewFollowing,
 } = require("./controllers/feed");
 const { updateSiteConfig } = require("./controllers/config");
-const { fetchLatestPosts } = require("./services/feed");
-const { getConfig } = require("./services/config");
 
 //Pages Routes
 app.get("/", viewPostsPage); //load the default page containg all the posts
@@ -55,21 +60,5 @@ mongoose
 	})
 	.then(console.log("Database connected"))
 	.catch((error) => console.log(`${error} did not connect`));
-
-//CRON SCHEDULE (automatic fetching of post)
-(async () => {
-	const config = await getConfig();
-	if (config != false) {
-		const pull_interval = config.pull_interval;
-		nodeCron.schedule(`*/${pull_interval} * * * *`, async () => {
-			//get the current time
-			let currentTime = new Date();
-			let currentTimeString = currentTime.toString();
-			console.log(`${currentTimeString} - fetching latest posts`);
-			const runcron = await fetchLatestPosts();
-			// console.log(runcron);
-		});
-	}
-})();
 
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`));
