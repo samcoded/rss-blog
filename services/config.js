@@ -18,10 +18,6 @@ const getConfig = async () => {
 	}
 };
 
-if (getConfig() === false) {
-	setConfig({ preview_length: 30, pull_interval: 3600 });
-}
-
 module.exports = {
 	getConfig,
 	setConfig,

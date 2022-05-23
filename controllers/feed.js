@@ -1,6 +1,3 @@
-const Joi = require("joi");
-require("dotenv").config();
-
 const {
 	addFeed,
 	editFeed,

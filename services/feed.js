@@ -14,6 +14,7 @@ const checkRSS = async (url) => {
 				"contentSnippet",
 				"link",
 				"pubDate",
+				"guid",
 				["content:encoded", "fullcontent", { includeSnippet: true }],
 			],
 		},
@@ -42,17 +43,45 @@ const pullPostsFromRSS = async (id) => {
 			contentsnippet: posts[i].contentSnippet,
 			fullcontent: posts[i].fullcontent,
 			fullcontentsnippet: posts[i].fullcontentSnippet,
+			guid: posts[i].guid,
 			feed: id,
 		};
 		postData.push(post);
 	}
 	try {
-		let post = await postModel.insertMany(postData);
-		return post;
+		// let post = await postModel.insertMany(postData);
+		// return post;
+
+		await postModel.bulkWrite(
+			postData.map((doc) => ({
+				updateOne: {
+					filter: { link: doc.link, title: doc.title },
+					// filter: { guid: doc.guid },
+					update: doc,
+					upsert: true,
+				},
+			}))
+		);
+		return true;
 	} catch (error) {
 		return false;
 	}
 };
+const fetchLatestPosts = async () => {
+	//fetch latest feeds and save to database
+	try {
+		const feedData = await getFeeds();
+		const feeds = feedData.data;
+		for (let i = 0; i < feeds.length; i++) {
+			const feed = feeds[i];
+			const posts = await pullPostsFromRSS(feed._id);
+		}
+		return true;
+	} catch (error) {
+		return false;
+	}
+};
+
 const removeFeedPosts = async (id) => {
 	if (!mongoose.Types.ObjectId.isValid(id)) return false;
 	try {
@@ -78,7 +107,7 @@ const markAsRead = async (id) => {
 
 const addFeed = async (url) => {
 	const regschema = Joi.object().keys({
-		url: Joi.string().required().messages({
+		url: Joi.string().uri().required().messages({
 			"any.required": "Please input a valid url",
 		}),
 	});
@@ -180,7 +209,7 @@ const getPosts = async (perPage = 10, page = 1) => {
 		let postCount = 0;
 		const posts = await postModel
 			.find()
-			.sort({ createdAt: "desc" })
+			.sort({ date: "desc" })
 			.skip(perPage * page - perPage)
 			.limit(perPage)
 			.populate("feed");
@@ -210,4 +239,5 @@ module.exports = {
 	getPosts,
 	checkRSS,
 	pullPostsFromRSS,
+	fetchLatestPosts,
 };
