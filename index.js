@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const session = require("express-session");
+const MemoryStore = require("memorystore")(session);
 
 const app = express();
 dotenv.config();
@@ -12,6 +13,9 @@ app.set("view engine", "ejs");
 app.locals.moment = require("moment"); //set moment for ejs templates
 app.use(
 	session({
+		store: new MemoryStore({
+			checkPeriod: 86400000, // prune expired entries every 24h
+		}),
 		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
