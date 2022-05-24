@@ -21,11 +21,13 @@ const cronStart = async () => {
 		{ scheduled: true }
 	);
 	cronJob.start();
+	console.log("Cron started");
 };
 
 const cronRestart = async () => {
 	cronJob.stop();
 	await cronStart();
+	console.log("Cron restarted");
 };
 
 module.exports = {
