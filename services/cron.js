@@ -15,9 +15,8 @@ const cronStart = async () => {
 			await cronModel.create({
 				description: "Auto Cron",
 			});
-			// console log current time to string
-			// const timenow = new Date().toString();
-			// console.log(`Auto Cron at ${timenow}`);
+			const timenow = new Date().toString();
+			console.log(`Auto Cron at ${timenow}`);
 		},
 		{ scheduled: true }
 	);
