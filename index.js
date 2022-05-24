@@ -24,7 +24,6 @@ app.use(
 
 //Fetch posts from rss feeds
 const { cronStart } = require("./services/cron");
-cronStart();
 
 //Controllers
 const {
@@ -62,6 +61,9 @@ mongoose
 	})
 	.then(console.log("Database connected"))
 	.catch((error) => console.log(`${error} did not connect`));
+
+//Start cron automation
+cronStart();
 
 //Start server
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`));
