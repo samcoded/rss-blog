@@ -7,7 +7,7 @@ let cronJob;
 
 const cronStart = async () => {
 	const config = await getConfig();
-	const pull_interval = config.pull_interval;
+	const pull_interval = config?.pull_interval || 60;
 	cronJob = cron.schedule(
 		`*/${pull_interval} * * * *`,
 		async () => {

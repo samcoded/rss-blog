@@ -25,6 +25,7 @@ const viewPostsPage = async (req, res) => {
 	const page = req.query.page || 1;
 	const posts = await getPosts(perPage, page);
 	const config = await getConfig();
+	const preview_length = config?.preview_length || 100;
 	if (posts.success)
 		return res.render("posts", {
 			posts: posts.data,
@@ -33,7 +34,7 @@ const viewPostsPage = async (req, res) => {
 			pages: posts.pages,
 			total: posts.total,
 			perPage: posts.perPage,
-			preview_length: config.preview_length,
+			preview_length: preview_length,
 		});
 	return res.render("posts", {
 		posts: [],
@@ -46,15 +47,16 @@ const viewFeedsPage = async (req, res) => {
 	const page = req.query.page || 1;
 	const feeds = await getFeeds(perPage, page);
 	const config = await getConfig();
-
+	const preview_length = config?.preview_length || 100;
+	const pull_interval = config?.pull_interval || 60;
 	let renderData = {
 		feeds: feeds.data,
 		current: feeds.current,
 		pages: feeds.pages,
 		total: feeds.total,
 		perPage: feeds.perPage,
-		preview_length: config.preview_length,
-		pull_interval: config.pull_interval,
+		preview_length: preview_length,
+		pull_interval: pull_interval,
 	};
 	const sess = req.session;
 	if (sess.success) {
