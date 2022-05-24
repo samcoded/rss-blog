@@ -9,22 +9,20 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
-app.locals.moment = require("moment");
+app.locals.moment = require("moment"); //set moment for ejs templates
 app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
 	})
-);
+); //set up session
 
-const { autoFetch } = require("./services/fetch");
+//Fetch posts from rss feeds
+const { cronStart } = require("./services/cron");
+cronStart();
 
-app.use((req, res, next) => {
-	autoFetch();
-	next();
-});
-
+//Controllers
 const {
 	viewPostsPage,
 	viewFeedsPage,
@@ -61,4 +59,5 @@ mongoose
 	.then(console.log("Database connected"))
 	.catch((error) => console.log(`${error} did not connect`));
 
+//Start server
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`));
