@@ -1,70 +1,52 @@
 <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
-	<div class="flex items-center flex-shrink-0 text-white mr-6">
-		<span class="font-semibold text-xl tracking-tight">
-			<a href="/">
-				<div class="w-32">RSS BLOG</div>
-			</a>
-		</span>
-	</div>
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <span class="font-semibold text-xl tracking-tight">
+      <a href="/">
+        <div class="w-32">RSS BLOG</div>
+      </a>
+    </span>
+  </div>
 
-	<div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-		<div class="text-sm lg:flex-grow">
-			<a
-				href="/"
-				class="block mt-4 lg:inline-block font-bold lg:mt-0 text-teal-200 hover:text-white mr-4"
-			>
-				POSTS
-			</a>
-			<a
-				href="/following"
-				class="block mt-4 lg:inline-block font-bold lg:mt-0 text-teal-200 hover:text-white mr-4"
-			>
-				FOLLOWING </a
-			><a
-				href="/feeds"
-				class="block mt-4 lg:inline-block font-bold lg:mt-0 text-teal-200 hover:text-white mr-4"
-			>
-				MANAGE
-			</a>
-		</div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="/" class="block mt-4 lg:inline-block font-bold lg:mt-0 text-teal-200 hover:text-white mr-4">
+        POSTS
+      </a>
+      <a href="/following" class="block mt-4 lg:inline-block font-bold lg:mt-0 text-teal-200 hover:text-white mr-4">
+        FOLLOWING </a><a href="/feeds" class="block mt-4 lg:inline-block font-bold lg:mt-0 text-teal-200 hover:text-white mr-4">
+        MANAGE
+      </a>
+    </div>
 
-		<div>
-			<a
-				href="https://www.samuelanozie.me"
-				target="_blank"
-				class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-			>
-				MY PORTFOLIO
-			</a>
-		</div>
-	</div>
+    <div>
+      <a href="https://www.samuelanozie.me" target="_blank" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
+        MY PORTFOLIO
+      </a>
+    </div>
+  </div>
 </nav>
 <div class="container mx-auto px-4">
-	<% if(locals.error) { %>
+  <% if(locals.error) { %>
 
-	<div role="alert">
-		<div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-			Error
-		</div>
-		<div
-			class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700"
-		>
-			<p><%=message%></p>
-		</div>
-	</div>
+  <div role="alert">
+    <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+      Error
+    </div>
+    <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+      <p><%=message%></p>
+    </div>
+  </div>
 
-	<%}%> <% if(locals.success) { %>
+  <%}%> <% if(locals.success) { %>
 
-	<div role="alert">
-		<div class="bg-green-500 text-white font-bold rounded-t px-4 py-2">
-			Success
-		</div>
-		<div
-			class="border border-t-0 border-gteen-400 rounded-b bg-green-100 px-4 py-3 text-green-700"
-		>
-			<p><%=message%></p>
-		</div>
-	</div>
+  <div role="alert">
+    <div class="bg-green-500 text-white font-bold rounded-t px-4 py-2">
+      Success
+    </div>
+    <div class="border border-t-0 border-gteen-400 rounded-b bg-green-100 px-4 py-3 text-green-700">
+      <p><%=message%></p>
+    </div>
+  </div>
 
-	<%}%>
+  <%}%>
 </div>

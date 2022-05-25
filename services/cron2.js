@@ -1,3 +1,4 @@
+/*jshint esversion: 11 */
 const cron = require("node-cron");
 const cronModel = require("../models/cron");
 const { getConfig } = require("./config");
